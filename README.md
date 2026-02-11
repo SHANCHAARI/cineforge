@@ -3,6 +3,9 @@
 
 CineForge is a professional-grade, high-performance video editing engine for Android, designed to provide a buttery-smooth editing experience with multi-touch gestures and a reactive timeline.
 
+## 💡 The "Why" behind CineForge
+I built this because I was tired of being paywalled. Like many creators, I used countless editing apps, only to be constantly interrupted by "Premium Plan" requirements for basic cinematic effects and features. Fed up with the irritation of subscription-locked creativity, I decided to work on my own cinematic editing experience. This is built for the love of the craft, not the subscription.
+
 ---
 
 ## 🚀 Key Features
