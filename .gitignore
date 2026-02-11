@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+build/
+
+# Android Studio
+.idea/
+*.iml
+.navigation/
+captures/
+
+# NDK
+.externalNativeBuild/
+.cxx/
+
+# Local configuration (KEEP PRIVATE)
+local.properties
+
+# Secrets
+google-services.json
+*.jks
+*.keystore
+
+# Logs
+*.log
+*_log.txt
+full_log.txt
+native_build_log.txt
+
+# Generated files
+app/build/
+.kotlin/
