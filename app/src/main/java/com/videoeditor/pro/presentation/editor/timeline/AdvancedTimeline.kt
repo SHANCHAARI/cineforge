@@ -50,7 +50,7 @@ fun AdvancedTimeline(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF101010)) 
+            .background(Color.Black) 
             .transformable(state = transformableState)
             .scrollable(
                 state = scrollState,
@@ -64,7 +64,7 @@ fun AdvancedTimeline(
                 .fillMaxWidth()
                 .height(30.dp)
                 .align(Alignment.TopCenter)
-                .background(Color(0xFF202020))
+                .background(Color(0xFF050505))
         )
 
         // Tracks Container
