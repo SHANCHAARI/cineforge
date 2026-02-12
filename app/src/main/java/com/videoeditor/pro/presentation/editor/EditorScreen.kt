@@ -19,11 +19,39 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import android.Manifest
+import android.os.Build
+
 @Composable
 fun EditorScreen(
     onBack: () -> Unit,
     viewModel: EditorViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    
+    // Photo Picker Launcher
+    val pickMedia = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            viewModel.addMediaUri(uri, context)
+        }
+    }
+
+    // Permission Launcher
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val isGranted = permissions.entries.all { it.value }
+        if (isGranted) {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -79,7 +107,16 @@ fun EditorScreen(
 
         // FAB for adding layers
         FloatingActionButton(
-            onClick = { viewModel.addSampleClip() },
+            onClick = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    launcher.launch(arrayOf(
+                        Manifest.permission.READ_MEDIA_VIDEO,
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    ))
+                } else {
+                    launcher.launch(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE))
+                }
+            },
             containerColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .align(Alignment.CenterEnd)

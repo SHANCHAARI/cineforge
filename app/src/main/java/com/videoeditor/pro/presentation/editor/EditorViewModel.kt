@@ -60,15 +60,34 @@ class EditorViewModel @Inject constructor(
         }
     }
 
-    fun addSampleClip() {
+    fun addMediaUri(uri: android.net.Uri, context: android.content.Context) {
         viewModelScope.launch {
-            val clip = Clip(
-                filePath = "/storage/emulated/0/DCIM/Camera/test.mp4",
-                type = ClipType.VIDEO,
-                startTime = _uiState.value.currentTime,
-                duration = 5000
-            )
-            timelineRepository.addClip(0, clip)
+            val retriever = android.media.MediaMetadataRetriever()
+            try {
+                retriever.setDataSource(context, uri)
+                val durationStr = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION)
+                val duration = durationStr?.toLong() ?: 5000L // Fallback to 5s if duration unknown
+                
+                val clip = Clip(
+                    filePath = uri.toString(),
+                    type = ClipType.VIDEO,
+                    startTime = _uiState.value.currentTime,
+                    duration = duration
+                )
+                timelineRepository.addClip(0, clip)
+            } catch (e: Exception) {
+                Timber.e(e, "Error adding media clip from URI: $uri")
+                // Fallback to a default clip if there's an error
+                val clip = Clip(
+                    filePath = uri.toString(),
+                    type = ClipType.VIDEO,
+                    startTime = _uiState.value.currentTime,
+                    duration = 5000
+                )
+                timelineRepository.addClip(0, clip)
+            } finally {
+                retriever.release()
+            }
         }
     }
 }
