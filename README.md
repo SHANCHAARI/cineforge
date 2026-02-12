@@ -42,4 +42,4 @@ CineForge was created as a demonstration of production-level Android development
 ## 🔧 Building from Source
 1. Clone the repository.
 2. Ensure Android NDK and CMake are installed.
-3. Open in Android Studio and run `app`.
+3. Open in Android Studio and run `app'`.
