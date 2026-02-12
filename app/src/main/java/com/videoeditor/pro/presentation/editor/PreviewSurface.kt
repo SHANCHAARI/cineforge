@@ -12,6 +12,12 @@ import timber.log.Timber
 object NativeBridge {
     external fun nativeSetSurface(surface: Surface)
     external fun nativeReleaseSurface()
+    external fun nativeSetColorGrading(brightness: Float, contrast: Float, saturation: Float)
+    external fun nativeAddMediaClip(id: String, path: String, startTimeMs: Long, durationMs: Long)
+    external fun nativeRemoveMediaClip(id: String)
+    external fun nativeSetPlayheadMs(timeMs: Long)
+    external fun nativeSplitClip(id: String, timeMs: Long)
+    external fun nativeMoveClip(id: String, newStartTimeMs: Long)
 }
 
 @Composable

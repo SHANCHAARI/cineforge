@@ -35,6 +35,7 @@ fun TimeRuler(
 fun AdvancedTimeline(
     state: TimelineState,
     onClipSelected: (String) -> Unit,
+    onClipMove: (String, Int, Long) -> Unit,
     onZoomChange: (Float) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -79,6 +80,7 @@ fun AdvancedTimeline(
                     track = state.tracks[index],
                     zoomLevel = state.zoomLevel,
                     onClipClick = onClipSelected,
+                    onClipMove = onClipMove,
                     index = index
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -102,6 +104,7 @@ fun TrackRow(
     track: TrackUiModel,
     zoomLevel: Float,
     onClipClick: (String) -> Unit,
+    onClipMove: (String, Int, Long) -> Unit,
     index: Int
 ) {
     Box(
@@ -121,7 +124,11 @@ fun TrackRow(
             ClipItem(
                 clip = clip,
                 zoomLevel = zoomLevel,
-                onClick = { onClipClick(clip.id) }
+                onClick = { onClipClick(clip.id) },
+                onDrag = { deltaX ->
+                    val newStartTime = (clip.startTimeMs + deltaX / zoomLevel).toLong().coerceAtLeast(0)
+                    onClipMove(clip.id, index, newStartTime)
+                }
             )
         }
     }
@@ -131,11 +138,15 @@ fun TrackRow(
 fun ClipItem(
     clip: ClipUiModel,
     zoomLevel: Float,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onDrag: (Float) -> Unit
 ) {
-    val startColor = if (clip.isSelected) Color(0xFF6C63FF) else Color(0xFF4A4A6A)
-    val endColor = if (clip.isSelected) Color(0xFF3F37C9) else Color(0xFF3A3A5A)
+    val baseColor = Color(clip.color)
+    val startColor = if (clip.isSelected) baseColor.copy(alpha = 1.0f) else baseColor.copy(alpha = 0.7f)
+    val endColor = if (clip.isSelected) baseColor.copy(alpha = 0.9f) else baseColor.copy(alpha = 0.6f)
     
+    var offsetX by remember { mutableFloatStateOf(0f) }
+
     Box(
         modifier = Modifier
             .offset(x = clip.startOffset(zoomLevel))
@@ -151,6 +162,18 @@ fun ClipItem(
                 color = if (clip.isSelected) Color.White.copy(alpha = 0.8f) else Color.White.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(8.dp)
             )
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        offsetX += dragAmount.x
+                    },
+                    onDragEnd = {
+                        onDrag(offsetX)
+                        offsetX = 0f
+                    }
+                )
+            }
             .clickable { onClick() }
     ) {
         Column(modifier = Modifier.padding(4.dp)) {

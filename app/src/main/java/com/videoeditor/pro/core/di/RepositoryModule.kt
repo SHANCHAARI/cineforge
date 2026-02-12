@@ -1,6 +1,6 @@
 package com.videoeditor.pro.core.di
 
-import com.videoeditor.pro.data.repository.InMemoryTimelineRepository
+import com.videoeditor.pro.data.repository.RoomTimelineRepository
 import com.videoeditor.pro.domain.repository.TimelineRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +15,6 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindTimelineRepository(
-        impl: InMemoryTimelineRepository
+        impl: RoomTimelineRepository
     ): TimelineRepository
 }

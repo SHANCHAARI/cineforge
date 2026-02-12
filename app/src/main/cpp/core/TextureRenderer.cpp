@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <vector>
 
-
 namespace videoeditor {
 
 static const char *VERTEX_SHADER = R"(
@@ -24,10 +23,25 @@ static const char *FRAGMENT_SHADER = R"(
     in vec2 v_TexCoord;
     out vec4 outColor;
     uniform sampler2D u_Texture;
+    
+    uniform float u_Brightness;
+    uniform float u_Contrast;
+    uniform float u_Saturation;
+
     void main() {
-        // outColor = texture(u_Texture, v_TexCoord);
-        // Debugging: Draw a gradient instead of texture for now if texture is invalid
-        outColor = vec4(v_TexCoord.x, v_TexCoord.y, 0.5, 1.0); 
+        vec4 texColor = texture(u_Texture, v_TexCoord);
+        
+        // Brightness
+        vec3 color = texColor.rgb * u_Brightness;
+        
+        // Contrast
+        color = (color - 0.5) * u_Contrast + 0.5;
+        
+        // Saturation
+        float gray = dot(color, vec3(0.299, 0.587, 0.114));
+        color = mix(vec3(gray), color, u_Saturation);
+        
+        outColor = vec4(color, texColor.a);
     }
 )";
 
@@ -71,6 +85,13 @@ void TextureRenderer::initialize() {
   glBindVertexArray(0);
 }
 
+void TextureRenderer::setColorGrading(float brightness, float contrast,
+                                      float saturation) {
+  brightness_ = brightness;
+  contrast_ = contrast;
+  saturation_ = saturation;
+}
+
 void TextureRenderer::render(GLuint textureId, float x, float y, float width,
                              float height, float rotation) {
   if (program_ == 0)
@@ -78,9 +99,15 @@ void TextureRenderer::render(GLuint textureId, float x, float y, float width,
 
   glUseProgram(program_);
 
-  // TODO: Construct matrix from x,y,width,height,rotation
-  // For now, identity matrix logic or simple pass-through.
-  // Assuming u_Matrix for now is identity or handled partially.
+  // Bind texture
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, textureId);
+  glUniform1i(glGetUniformLocation(program_, "u_Texture"), 0);
+
+  // Set Uniforms
+  glUniform1f(glGetUniformLocation(program_, "u_Brightness"), brightness_);
+  glUniform1f(glGetUniformLocation(program_, "u_Contrast"), contrast_);
+  glUniform1f(glGetUniformLocation(program_, "u_Saturation"), saturation_);
 
   // Simple mock matrix (identity)
   GLfloat matrix[] = {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,

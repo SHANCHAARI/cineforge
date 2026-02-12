@@ -21,14 +21,17 @@ find_library(OpenSLES-lib OpenSLES)
 find_library(mediandk-lib mediandk)
 
 # Source files
-# Source files
 set(VIDEOEDITOR_SOURCES
     "jni/engine_jni.cpp"
     "core/Engine.cpp"
     "core/ShaderManager.cpp"
     "core/TextureRenderer.cpp"
+    "video/VideoDecoder.cpp"
     "utils/Logger.cpp"
 )
+
+# Add the new engine subdirectory
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../engine" engine_build)
 
 # Create shared library
 add_library(${CMAKE_PROJECT_NAME} SHARED ${VIDEOEDITOR_SOURCES})
@@ -45,10 +48,12 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/audio
     ${CMAKE_CURRENT_SOURCE_DIR}/math
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../../engine/include
 )
 
 # Link libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
+    cineforge
     ${log-lib}
     ${android-lib}
     ${EGL-lib}

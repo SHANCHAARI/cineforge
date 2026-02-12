@@ -9,4 +9,6 @@ interface TimelineRepository {
     suspend fun addClip(trackIndex: Int, clip: Clip)
     suspend fun removeClip(clipId: String)
     suspend fun moveClip(clipId: String, newTrackIndex: Int, newStartTime: Long)
+    suspend fun splitClip(clipId: String, splitTime: Long)
+    suspend fun trimClip(clipId: String, startTrim: Long, endTrim: Long)
 }
