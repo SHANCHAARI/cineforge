@@ -23,14 +23,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "VideoEditorPro"
 include(":app")
-
-// Enable Gradle's configuration cache
-enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
-
-// Configure build cache
-buildCache {
-    local {
-        directory = File(rootDir, "build-cache")
-        removeUnusedEntriesAfterDays = 30
-    }
-}
