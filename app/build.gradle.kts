@@ -121,16 +121,15 @@ dependencies {
     implementation(libs.media3.transformer)
 
     // FFmpeg for advanced video processing
-    implementation(libs.ffmpeg)
+    // implementation(libs.ffmpeg) // Temporarily commented - needs special repository setup
 
     // Coil for image loading
     implementation(libs.coil.compose)
     implementation(libs.coil.video)
     
     // Video processing utilities
-    implementation(libs.youtubedl)
     implementation(libs.transcoder)
-    implementation(libs.exoplayer.filter)
+    // implementation(libs.exoplayer.filter) // Temporarily commented
 
     // GPU Image Processing
     implementation(libs.gpuimage)
