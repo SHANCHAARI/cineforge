@@ -114,10 +114,12 @@ void Engine::splitClip(const std::string &clipId, long timeMs) {
     long firstPartDuration = timeMs - it->startTime;
     long secondPartDuration = it->duration - firstPartDuration;
 
-    MediaClip secondPart = *it;
+    MediaClip secondPart;
     secondPart.id = it->id + "_b";
+    secondPart.path = it->path;
     secondPart.startTime = timeMs;
     secondPart.duration = secondPartDuration;
+    secondPart.textureId = 0; // Will be generated on first render
     secondPart.decoder = std::make_unique<VideoDecoder>(it->path);
     secondPart.decoder->initialize();
 
