@@ -20,5 +20,5 @@ double KeyframeManager::eval(const std::string& id, double time) const {
     return c ? c->evaluate(time) : 0.0;
 }
 
-} // namespace cineforge::timeline
+} // namespace cineforge::timeline an dthis thing
 

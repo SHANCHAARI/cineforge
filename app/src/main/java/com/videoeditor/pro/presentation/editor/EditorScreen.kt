@@ -8,13 +8,15 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.AspectRatio
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.videoeditor.pro.presentation.editor.timeline.AdvancedTimeline
+import com.videoeditor.pro.presentation.editor.timeline.ProfessionalTimeline
+import com.videoeditor.pro.presentation.camera.CameraAdjustmentPanel
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +39,7 @@ import android.os.Build
 @Composable
 fun EditorScreen(
     onBack: () -> Unit,
+    onExportClick: () -> Unit = {},
     viewModel: EditorViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -100,19 +103,27 @@ fun EditorScreen(
                     color = Color.LightGray
                 )
             }
-            var showAspectMenu by remember { mutableStateOf(false) }
-            Box {
-                IconButton(onClick = { showAspectMenu = !showAspectMenu }) {
+            Row {
+                IconButton(onClick = onExportClick) {
                     Icon(
-                        Icons.Default.AspectRatio,
-                        contentDescription = "Aspect Ratio",
+                        Icons.Default.FileDownload,
+                        contentDescription = "Export",
                         tint = Color.White
                     )
                 }
-                DropdownMenu(
-                    expanded = showAspectMenu,
-                    onDismissRequest = { showAspectMenu = false }
-                ) {
+                var showAspectMenu by remember { mutableStateOf(false) }
+                Box {
+                    IconButton(onClick = { showAspectMenu = !showAspectMenu }) {
+                        Icon(
+                            Icons.Default.AspectRatio,
+                            contentDescription = "Aspect Ratio",
+                            tint = Color.White
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showAspectMenu,
+                        onDismissRequest = { showAspectMenu = false }
+                    ) {
                     DropdownMenuItem(
                         text = { Text("Vertical 9:16 (1080x1920)") },
                         onClick = {
@@ -149,6 +160,7 @@ fun EditorScreen(
                         }
                     )
                 }
+                }
             }
         }
 
@@ -180,11 +192,12 @@ fun EditorScreen(
                 .fillMaxWidth()
                 .weight(0.6f)
         ) {
-            AdvancedTimeline(
+            ProfessionalTimeline(
                 state = uiState,
                 onClipSelected = viewModel::selectClip,
                 onClipMove = viewModel::moveClip,
-                onZoomChange = viewModel::updateZoom
+                onZoomChange = viewModel::updateZoom,
+                onTrackAdd = { /* TODO: Add new track */ }
             )
         }
         } // Closing the Screen Column here
@@ -192,6 +205,7 @@ fun EditorScreen(
         // Tool Panel (Floating)
         if (uiState.selectedClipId != null) {
             var showGrading by remember { mutableStateOf(false) }
+            var showCameraAdjustments by remember { mutableStateOf(false) }
 
             Box(modifier = Modifier.fillMaxSize()) {
                 // Actions Column
@@ -230,6 +244,13 @@ fun EditorScreen(
                     ) {
                         Icon(Icons.Default.Palette, contentDescription = "Color Grading")
                     }
+                    
+                    SmallFloatingActionButton(
+                        onClick = { showCameraAdjustments = !showCameraAdjustments },
+                        containerColor = Color(0xFF7C5FFF)
+                    ) {
+                        Icon(Icons.Default.Settings, contentDescription = "Camera Adjustments")
+                    }
                 }
 
                 // Grading Panel
@@ -266,6 +287,12 @@ fun EditorScreen(
                         }
                     }
                 }
+                
+                // Camera Adjustment Panel
+                CameraAdjustmentPanel(
+                    isVisible = showCameraAdjustments,
+                    onDismiss = { showCameraAdjustments = false }
+                )
             }
         }
 

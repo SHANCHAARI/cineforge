@@ -84,6 +84,9 @@ android {
 }
 
 dependencies {
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+    
     // Core Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -121,7 +124,7 @@ dependencies {
     implementation(libs.media3.transformer)
 
     // FFmpeg for advanced video processing
-    // implementation(libs.ffmpeg) // Temporarily commented - needs special repository setup
+    implementation(libs.ffmpeg)
 
     // Coil for image loading
     implementation(libs.coil.compose)
@@ -129,7 +132,8 @@ dependencies {
     
     // Video processing utilities
     implementation(libs.transcoder)
-    // implementation(libs.exoplayer.filter) // Temporarily commented
+    implementation(libs.exoplayer.filter)
+    implementation(libs.youtubedl)
 
     // GPU Image Processing
     implementation(libs.gpuimage)
@@ -143,9 +147,6 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-
-    // DataStore
-    implementation(libs.androidx.core.ktx) // Placeholder, update if catalog has datastore
 
     // Testing
     testImplementation(libs.junit)
