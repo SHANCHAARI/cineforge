@@ -151,32 +151,3 @@ fun getTimelineColors(): TimelineColors {
         TimelineColors.Light
     }
 }
-
-data class TimelineColors(
-    val background: Color,
-    val track: Color,
-    val trackSelected: Color,
-    val playhead: Color,
-    val ruler: Color,
-    val text: Color
-) {
-    companion object {
-        val Dark = TimelineColors(
-            background = VideoEditorColors.TimelineBackground,
-            track = VideoEditorColors.TimelineTrack,
-            trackSelected = VideoEditorColors.TimelineTrackSelected,
-            playhead = VideoEditorColors.Playhead,
-            ruler = VideoEditorColors.RulerBackground,
-            text = Color.White
-        )
-        
-        val Light = TimelineColors(
-            background = Color(0xFFF5F5F5),
-            track = Color(0xFFE0E0E0),
-            trackSelected = Color(0xFFD0D0D0),
-            playhead = Color(0xFFE91E63),
-            ruler = Color(0xFFEEEEEE),
-            text = Color.Black
-        )
-    }
-}

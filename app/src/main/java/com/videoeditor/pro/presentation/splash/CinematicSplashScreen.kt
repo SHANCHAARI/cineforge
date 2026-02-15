@@ -3,6 +3,7 @@ package com.videoeditor.pro.presentation.splash
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,8 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.videoeditor.pro.presentation.animation.*
 import com.videoeditor.pro.presentation.settings.SettingsViewModel
+import com.videoeditor.pro.R
 
 private val primaryColor = Color(0xFF00D4FF)
 
@@ -130,6 +134,17 @@ fun CinematicSplashScreen(
                 }
                 
                 Spacer(modifier = Modifier.height(48.dp))
+                
+                // User Profile Section
+                AnimatedVisibility(
+                    visible = isLoading,
+                    enter = AnimationPresets.Entrance.slideUp(config, delay = 300),
+                    exit = fadeOut(tween(300))
+                ) {
+                    UserProfileSection(modifier = Modifier.alpha(contentAlpha))
+                }
+                
+                Spacer(modifier = Modifier.height(32.dp))
                 
                 // App name with cinematic entrance
                 AnimatedVisibility(
@@ -405,5 +420,68 @@ private fun CinematicLoadingContainer(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun UserProfileSection(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Profile Avatar with cinematic styling
+        Box(
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(
+                            primaryColor.copy(alpha = 0.3f),
+                            primaryColor.copy(alpha = 0.1f)
+                        )
+                    )
+                )
+                .border(
+                    width = 2.dp,
+                    color = Color.White.copy(alpha = 0.3f),
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            // User Profile Image - Replace with your actual image resource
+            Image(
+                painter = painterResource(id = R.drawable.profile_placeholder), // Replace with your photo
+                contentDescription = "Vidya Sagar Profile",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(70.dp)
+                    .clip(CircleShape)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White.copy(alpha = 0.2f),
+                        shape = CircleShape
+                    )
+            )
+        }
+        
+        // Profile Text
+        Text(
+            text = "Vidya Sagar",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color.White.copy(alpha = 0.9f),
+            letterSpacing = 0.5.sp
+        )
+        
+        Text(
+            text = "App Creator & Developer",
+            fontSize = 12.sp,
+            color = Color.White.copy(alpha = 0.6f),
+            letterSpacing = 0.3.sp
+        )
     }
 }
