@@ -1,0 +1,186 @@
+I am building a production-ready, real-data-based web application for a National Level Hackathon under the theme:
+
+“Innovation for Rural Empowerment & Sustainable Technology”
+
+Domain: Finance
+Problem Statement: Agricultural Income & Crop Insurance Assistant
+
+Project Name: AgriShield AI
+
+I want to build a fully functional, mobile-first Progressive Web App (PWA) designed specifically for Indian farmers.
+
+The application must:
+
+Be smooth and lightweight
+
+Load fast even on low-end Android phones
+
+Use real APIs and real datasets (no fake or hardcoded data)
+
+Be farmer-friendly with simple UI
+
+Support multiple Indian languages
+
+Use explainable and transparent prediction logic
+
+CORE FUNCTIONAL MODULES
+
+Crop Income Forecast Engine
+
+Input: Crop type, land area, location
+
+Use real historical yield data
+
+Use weather forecast data
+
+Calculate predicted yield
+
+Multiply with real mandi price
+
+Show expected income
+
+Show risk-adjusted income
+
+Weather Risk Scoring
+
+Use real weather API
+
+Calculate drought risk
+
+Calculate flood probability
+
+Output simple risk score (0–10)
+
+Smart PMFBY Insurance Assistant
+
+Implement PMFBY compensation formula
+
+Estimate payout using yield deviation
+
+Show claim probability logic
+
+Explain calculation clearly
+
+Mandi Price Optimization
+
+Use real Agmarknet or mandi data
+
+Show 7-day trend
+
+Simple “Sell Now” or “Wait” indicator
+
+Farmer Financial Health Score
+
+Score based on yield stability
+
+Risk exposure
+
+Income consistency
+
+Display simple rating: Good / Medium / Risky
+
+UI REQUIREMENTS
+
+Mobile-first responsive design
+
+Large buttons
+
+High contrast colors
+
+Minimal text
+
+Icon-based navigation
+
+Circular risk meters
+
+Card-based layout
+
+Multi-language dropdown
+
+Optional voice output using Web Speech API
+
+No complex animations.
+No heavy UI libraries.
+Keep it fast and clean.
+
+TECH STACK (Google Ecosystem Preferred)
+
+Frontend:
+React + Vite + Tailwind CSS
+
+Backend:
+FastAPI (Python)
+
+Database:
+Firestore or PostgreSQL
+
+Hosting:
+Google Cloud
+
+AI:
+Scikit-learn or lightweight ML models
+Explainable algorithms preferred
+
+Weather:
+OpenWeather API
+
+Maps:
+Google Maps API
+
+Ensure:
+
+Async API handling
+
+Caching mechanism
+
+Error handling
+
+Clean architecture separation
+
+Modular structure
+
+Production-grade folder structure
+
+PERFORMANCE REQUIREMENTS
+
+First load under 2 seconds
+
+Optimized bundle size
+
+Lazy loading
+
+API response under 300ms
+
+Mobile 3G optimization
+
+No blocking scripts
+
+OUTPUT I NEED
+
+Provide:
+
+Complete folder structure
+
+Frontend code structure
+
+Backend API structure
+
+ML model explanation
+
+Database schema
+
+Risk scoring formula
+
+Deployment steps
+
+PWA setup instructions
+
+Security best practices
+
+Scaling strategy
+
+Clean comments in code
+
+This must be production-quality, not demo-only.
+
+Think like a senior software architect building a scalable agri-fintech platform.
